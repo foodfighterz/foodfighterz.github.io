@@ -8,7 +8,7 @@
     body {
       margin: 0;
       height: 100vh;
-      background: url('https://i.imgur.com/a/VutMRY2.jpg') center/cover no-repeat fixed; /* ← replace with your direct Imgur image URL */
+      background: url('https://i.imgur.com/VutMRY2.jpg') center/cover no-repeat fixed #1a1a1a; /* dark fallback */
       color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
@@ -36,12 +36,9 @@
       let target = new Date(pst);
       target.setHours(12, 0, 0, 0);
       
-      if (pst > target) {
-        target.setDate(target.getDate() + 1);
-      }
+      if (pst > target) target.setDate(target.getDate() + 1);
       
       const diff = target - pst;
-      
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
@@ -49,7 +46,6 @@
       document.getElementById("timer").textContent = 
         `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
     }
-    
     updateTimer();
     setInterval(updateTimer, 1000);
   </script>
