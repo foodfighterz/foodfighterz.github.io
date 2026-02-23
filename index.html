@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lunch Countdown – 12 PM PST</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url('https://imgur.com/oOO5a1T?auto=format&fit=crop&q=80') center/cover no-repeat fixed;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-shadow: 0 0 8px #000;
+    }
+    h1 { font-size: 3.5rem; margin: 0.4em; }
+    #timer { font-size: 5rem; font-weight: bold; letter-spacing: 0.05em; }
+    .label { font-size: 1.8rem; opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <h1>Lunch Time In</h1>
+  <div id="timer">--:--:--</div>
+  <div class="label">HOURS  MINUTES  SECONDS</div>
+
+  <script>
+    function updateTimer() {
+      const now = new Date();
+      const pst = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+      
+      let target = new Date(pst);
+      target.setHours(12, 0, 0, 0);
+      
+      if (pst > target) {
+        target.setDate(target.getDate() + 1);
+      }
+      
+      const diff = target - pst;
+      
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      
+      document.getElementById("timer").textContent = 
+        `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  </script>
+</body>
+</html>
