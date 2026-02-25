@@ -3,121 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily PST Timers</title>
+  <title>Daily Timers – PST</title>
   <style>
-    body { margin:0; font-family:Arial,sans-serif; color:#fff; }
-    section { height:20vh; min-height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; text-shadow:0 0 6px #000; }
-    h2 { margin:0.3em; font-size:2.2rem; }
-    .time { font-size:3.8rem; font-weight:bold; letter-spacing:0.04em; }
-    #sec1 { background:#000000; color:#FDBF2D; }
-    #sec2 { background:#000C3B; color:#BC0556; }
-    #sec3 { background:#2D2F4A; color:#FF9E9E; }
-    #sec4 { background:#2251C0; color:#FAF92A; }
-    #sec5 { background:#2D2926; color:#F84242; }
+    body { margin:0; padding:0; font-family:Arial,sans-serif; color:#fff; }
+    section { height:20vh; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
+    h2 { margin:0.3em; font-size:1.8rem; }
+    .time { font-size:3.5rem; font-weight:bold; letter-spacing:0.05em; }
+    .label { font-size:1.2rem; opacity:0.9; }
+    .gif { position:absolute; inset:0; background:#000; display:none; z-index:10; }
+    .gif img { width:100%; height:100%; object-fit:cover; }
   </style>
 </head>
 <body>
-  <section id="sec1">
-    <h2>Current Pacific Time</h2>
-    <div class="time" id="current">--:--:--</div>
-  </section>
 
-  <section id="sec2">
-    <h2>Lunch In (12 PM PST)</h2>
-    <div class="time" id="lunch">--:--:--</div>
-  </section>
+<section style="background:#000000;">
+  <h2>Pacific Time</h2>
+  <div id="current" class="time">--:--:--</div>
+</section>
 
-  <section id="sec3">
-    <h2>4 PM Clock-Out In</h2>
-    <div class="time" id="four">--:--:--</div>
-  </section>
+<section style="background:#000C3B;">
+  <h2>Lunch (12 PM PST)</h2>
+  <div id="lunch" class="time">--:--:--</div>
+  <div class="label">HOURS  MINUTES  SECONDS</div>
+  <div id="lunch-gif" class="gif"><img src="https://tenor.com/f0vS4rwx661.gif" alt="lunch gif"></div>
+</section>
 
-  <section id="sec4">
-    <h2>5 PM Clock-Out In</h2>
-    <div class="time" id="five">--:--:--</div>
-  </section>
+<section style="background:#2D2F4A;">
+  <h2>Clock-out (4 PM PST)</h2>
+  <div id="four" class="time">--:--:--</div>
+  <div class="label">HOURS  MINUTES  SECONDS</div>
+  <div id="four-gif" class="gif"><img src="https://tenor.com/mOI1WsAVQrt.gif" alt="clockout gif"></div>
+</section>
 
-  <section id="sec5">
-    <h2>Next US Holiday In</h2>
-    <div class="time" id="holiday">--:--:--</div>
-    <div id="holidayName" style="font-size:1.4rem; opacity:0.9;"></div>
-  </section>
+<section style="background:#2251C0;">
+  <h2>Clock-out (5 PM PST)</h2>
+  <div id="five" class="time">--:--:--</div>
+  <div class="label">HOURS  MINUTES  SECONDS</div>
+  <div id="five-gif" class="gif"><img src="https://tenor.com/mOI1WsAVQrt.gif" alt="clockout gif"></div>
+</section>
 
-  <script>
-    const zones = "America/Los_Angeles";
+<section style="background:#2D2926;">
+  <h2>Next Holiday</h2>
+  <div id="holiday" class="time">--:--:--</div>
+  <div id="holiday-name" class="label">to Memorial Day, May 25</div>
+  <div id="holiday-gif" class="gif"><img src="https://tenor.com/oMXrneORf23.gif" alt="holiday gif"></div>
+</section>
 
-    function format(n) { return n.toString().padStart(2,"0"); }
+<script>
+const tz = "America/Los_Angeles";
 
-    function getPSTDate() {
-      return new Date(new Date().toLocaleString("en-US", {timeZone: zones}));
-    }
+function format(n) { return n.toString().padStart(2,"0"); }
 
-    function updateCurrent() {
-      const d = getPSTDate();
-      document.getElementById("current").textContent = 
-        `${format(d.getHours())}:${format(d.getMinutes())}:${format(d.getSeconds())}`;
-    }
+function getPSTDate() {
+  return new Date(new Date().toLocaleString("en-US", {timeZone:tz}));
+}
 
-    function countdownTo(hour, id) {
-      const pst = getPSTDate();
-      let target = new Date(pst);
-      target.setHours(hour, 0, 0, 0);
-      if (pst > target) target.setDate(target.getDate() + 1);
-      const diff = target - pst;
-      const h = Math.floor(diff / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById(id).textContent = `${format(h)}:${format(m)}:${format(s)}`;
-    }
+function updateCurrent() {
+  const d = getPSTDate();
+  document.getElementById("current").textContent = 
+    `${format(d.getHours())}:${format(d.getMinutes())}:${format(d.getSeconds())}`;
+}
 
-    // Holiday logic (hardcoded 2026 federal holidays; update yearly if needed)
-    const holidays2026 = [
-      {name: "New Year's Day", date: "2026-01-01"},
-      {name: "Martin Luther King Jr. Day", date: "2026-01-19"},
-      {name: "Washington's Birthday", date: "2026-02-16"},
-      {name: "Memorial Day", date: "2026-05-25"},
-      {name: "Juneteenth", date: "2026-06-19"},
-      {name: "Independence Day (observed)", date: "2026-07-03"},
-      {name: "Labor Day", date: "2026-09-07"},
-      {name: "Columbus Day", date: "2026-10-12"},
-      {name: "Veterans Day", date: "2026-11-11"},
-      {name: "Thanksgiving Day", date: "2026-11-26"},
-      {name: "Christmas Day", date: "2026-12-25"}
-    ];
+function countdown(id, targetHour, gifId) {
+  const now = getPSTDate();
+  let target = new Date(now);
+  target.setHours(targetHour,0,0,0);
+  if (now > target) target.setDate(target.getDate()+1);
+  const diff = target - now;
+  if (diff <= 0) {
+    document.getElementById(id).textContent = "00:00:00";
+    if (gifId) document.getElementById(gifId).style.display = "block";
+    return;
+  }
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById(id).textContent = `${format(h)}:${format(m)}:${format(s)}`;
+  if (gifId) document.getElementById(gifId).style.display = "none";
+}
 
-    function updateHoliday() {
-      const now = getPSTDate();
-      let next = null;
-      let minDiff = Infinity;
-      holidays2026.forEach(h => {
-        const d = new Date(h.date + "T00:00:00");
-        if (d > now) {
-          const diff = d - now;
-          if (diff < minDiff) { minDiff = diff; next = {diff, name: h.name, target: d}; }
-        }
-      });
-      if (!next) { // fallback if past last; use next year's Jan 1 (simplified)
-        next = {diff: new Date("2027-01-01T00:00:00") - now, name: "New Year's Day 2027"};
-      }
-      const diffMs = next.diff;
-      const days = Math.floor(diffMs / 86400000);
-      const hrs = Math.floor((diffMs % 86400000) / 3600000);
-      const mins = Math.floor((diffMs % 3600000) / 60000);
-      const secs = Math.floor((diffMs % 60000) / 1000);
-      document.getElementById("holiday").textContent = 
-        days > 0 ? `${days}d ${format(hrs)}:${format(mins)}:${format(secs)}` : `${format(hrs)}:${format(mins)}:${format(secs)}`;
-      document.getElementById("holidayName").textContent = next.name;
-    }
+function updateHoliday() {
+  // Next US federal holiday after Feb 25 2026: Memorial Day May 25 2026
+  const target = new Date("2026-05-25T00:00:00").toLocaleString("en-US",{timeZone:tz});
+  const t = new Date(target);
+  const now = getPSTDate();
+  const diff = t - now;
+  if (diff <= 0) {
+    document.getElementById("holiday").textContent = "00:00:00";
+    document.getElementById("holiday-gif").style.display = "block";
+    return;
+  }
+  const days = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById("holiday").textContent = `${days}d ${format(h)}:${format(m)}:${format(s)}`;
+  document.getElementById("holiday-name").textContent = "to Memorial Day, May 25";
+  document.getElementById("holiday-gif").style.display = "none";
+}
 
-    function tick() {
-      updateCurrent();
-      countdownTo(12, "lunch");
-      countdownTo(16, "four");
-      countdownTo(17, "five");
-      updateHoliday();
-    }
-    tick();
-    setInterval(tick, 1000);
-  </script>
+function tick() {
+  updateCurrent();
+  countdown("lunch",12,"lunch-gif");
+  countdown("four",16,"four-gif");
+  countdown("five",17,"five-gif");
+  updateHoliday();
+}
+
+tick();
+setInterval(tick,1000);
+</script>
 </body>
 </html>
