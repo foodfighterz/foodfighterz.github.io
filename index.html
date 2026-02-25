@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Timers – PST</title>
   <style>
-    body { margin:0; padding:0; font-family:Arial,sans-serif; color:#fff; }
+    body { margin:0; padding:0; font-family:Arial,sans-serif; }
     section { height:20vh; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
     h2 { margin:0.3em; font-size:1.8rem; }
     .time { font-size:3.5rem; font-weight:bold; letter-spacing:0.05em; }
@@ -16,33 +16,33 @@
 </head>
 <body>
 
-<section style="background:#000000;">
+<section style="background:#000000; color:#FDBF2D;">
   <h2>Pacific Time</h2>
   <div id="current" class="time">--:--:--</div>
 </section>
 
-<section style="background:#000C3B;">
+<section style="background:#000C3B; color:#BC0556;">
   <h2>Lunch (12 PM PST)</h2>
   <div id="lunch" class="time">--:--:--</div>
   <div class="label">HOURS  MINUTES  SECONDS</div>
   <div id="lunch-gif" class="gif"><img src="https://tenor.com/f0vS4rwx661.gif" alt="lunch gif"></div>
 </section>
 
-<section style="background:#2D2F4A;">
+<section style="background:#2D2F4A; color:#FF9E9E;">
   <h2>Clock-out (4 PM PST)</h2>
   <div id="four" class="time">--:--:--</div>
   <div class="label">HOURS  MINUTES  SECONDS</div>
   <div id="four-gif" class="gif"><img src="https://tenor.com/mOI1WsAVQrt.gif" alt="clockout gif"></div>
 </section>
 
-<section style="background:#2251C0;">
+<section style="background:#2251C0; color:#FAF92A;">
   <h2>Clock-out (5 PM PST)</h2>
   <div id="five" class="time">--:--:--</div>
   <div class="label">HOURS  MINUTES  SECONDS</div>
   <div id="five-gif" class="gif"><img src="https://tenor.com/mOI1WsAVQrt.gif" alt="clockout gif"></div>
 </section>
 
-<section style="background:#2D2926;">
+<section style="background:#2D2926; color:#F84242;">
   <h2>Next Holiday</h2>
   <div id="holiday" class="time">--:--:--</div>
   <div id="holiday-name" class="label">to Memorial Day, May 25</div>
@@ -83,7 +83,6 @@ function countdown(id, targetHour, gifId) {
 }
 
 function updateHoliday() {
-  // Next US federal holiday after Feb 25 2026: Memorial Day May 25 2026
   const target = new Date("2026-05-25T00:00:00").toLocaleString("en-US",{timeZone:tz});
   const t = new Date(target);
   const now = getPSTDate();
